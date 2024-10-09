@@ -15,6 +15,7 @@ public class Gasto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String titulo;
     private String descricao;
     private LocalDate data;
     private Double valor;
@@ -25,6 +26,14 @@ public class Gasto implements Serializable {
         this.descricao = descricao;
         this.data = data;
         this.valor = valor;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public Long getId() {

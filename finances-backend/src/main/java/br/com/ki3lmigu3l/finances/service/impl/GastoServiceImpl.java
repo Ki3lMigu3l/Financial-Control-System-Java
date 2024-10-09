@@ -8,6 +8,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class GastoServiceImpl implements GastoService {
 
@@ -15,9 +18,23 @@ public class GastoServiceImpl implements GastoService {
     private GastoRepository gastoRepository;
 
     @Override
-    public Gasto save(GastoDTO gastoDto) {
-        var gasto = new Gasto();
-        BeanUtils.copyProperties(gastoDto, gasto);
+    public Gasto save(Gasto gasto) {
         return gastoRepository.save(gasto);
     }
+
+    @Override
+    public List<Gasto> getAllGastos() {
+        return gastoRepository.findAll();
+    }
+
+    @Override
+    public Optional<Gasto> findGastoById(Long id) {
+        return gastoRepository.findById(id);
+    }
+
+    @Override
+    public void delete(Gasto gasto) {
+        gastoRepository.delete(gasto);
+    }
+
 }
