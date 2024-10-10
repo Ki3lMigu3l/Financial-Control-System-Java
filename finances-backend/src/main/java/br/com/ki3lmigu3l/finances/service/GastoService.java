@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface GastoService {
 
-    Gasto save(Gasto gasto);
+    Gasto save(Gasto gasto, Long userId);
+    Gasto update(Gasto gasto);
     List<Gasto> getAllGastos();
     Optional<Gasto> findGastoById(Long id);
     void delete(Gasto gasto);

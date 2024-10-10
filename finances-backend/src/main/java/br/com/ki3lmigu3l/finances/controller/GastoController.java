@@ -2,7 +2,9 @@ package br.com.ki3lmigu3l.finances.controller;
 
 import br.com.ki3lmigu3l.finances.dto.GastoDTO;
 import br.com.ki3lmigu3l.finances.model.Gasto;
+import br.com.ki3lmigu3l.finances.model.Usuario;
 import br.com.ki3lmigu3l.finances.service.GastoService;
+import br.com.ki3lmigu3l.finances.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +21,19 @@ public class GastoController {
     @Autowired
     private GastoService gastoService;
 
-    @PostMapping
-    public ResponseEntity<Gasto> createGasto (@RequestBody GastoDTO gastoDTO) {
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Object> createGasto (@RequestBody GastoDTO gastoDTO, @PathVariable Long id) {
+        Optional<Usuario> usuarioOptional = usuarioService.findUserById(id);
+        if (usuarioOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+
         var gasto = new Gasto();
         BeanUtils.copyProperties(gastoDTO, gasto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(gastoService.save(gasto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(gastoService.save(gasto, id));
     }
 
     @GetMapping
@@ -51,7 +61,7 @@ public class GastoController {
 
         var gasto = gastoOptional.get();
         BeanUtils.copyProperties(gastoDTO, gasto);
-        gastoService.save(gasto);
+        gastoService.update(gasto);
         return ResponseEntity.status(HttpStatus.OK).body(gastoDTO);
     }
 }

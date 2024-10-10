@@ -1,12 +1,10 @@
 package br.com.ki3lmigu3l.finances.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Gasto implements Serializable {
@@ -20,7 +18,15 @@ public class Gasto implements Serializable {
     private LocalDate data;
     private Double valor;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     public Gasto() {}
+
+    public Gasto (Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     public Gasto(String descricao, LocalDate data, Double valor) {
         this.descricao = descricao;
